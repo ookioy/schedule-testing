@@ -33,7 +33,6 @@ i18next
                 transEmptyNodeValue: '',
                 transSupportBasicHtmlNodes: true,
                 useSuspense: true,
-                wait: true,
             },
         },
         (err) => {
