@@ -1,5 +1,5 @@
 ---
-name: Exercise2Issue
+name: question
 about: Describe this issue template's purpose here.
 title: ''
 labels: ''
