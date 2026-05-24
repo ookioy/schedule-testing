@@ -1,0 +1,544 @@
+{
+	"info": {
+		"_postman_id": "5edbb3e0-3fac-4913-8add-de2b53ab04ec",
+		"name": "Schedule API  Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "54932979",
+		"_collection_link": "https://yeremiia-dmytro-6634722.postman.co/workspace/schedule-local~06818895-ac0c-4374-b2de-5a6e62a9749d/collection/54932979-5edbb3e0-3fac-4913-8add-de2b53ab04ec?action=share&source=collection_link&creator=54932979"
+	},
+	"item": [
+		{
+			"name": "Subject",
+			"item": [
+				{
+					"name": "GET All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+									"pm.test(\"Response is an array\", () => {",
+									"    pm.expect(pm.response.json()).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYW5hZ2VyQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9NQU5BR0VSIiwiaWF0IjoxNzc5MzU1MzU1LCJleHAiOjE3Nzk0NDE3NTV9.XTJL0sayw2FKpb98Mop3pAMnnAStyrnccUXGEwLGE0I",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/subjects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"subjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+									"pm.test(\"Response is an object\", () => {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.be.an('object');",
+									"});",
+									"pm.test(\"Has required fields\", () => {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.have.property('id');",
+									"    pm.expect(json).to.have.property('name');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/subjects/{{subjectId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"subjects",
+								"{{subjectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+									"pm.test(\"Response is an object\", () => {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.be.an('object');",
+									"});",
+									"pm.test(\"Created subject has id\", () => {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.have.property('id');",
+									"    pm.collectionVariables.set(\"subjectId\", json.id);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const timestamp = Date.now();",
+									"pm.collectionVariables.set(\"subjectName\", `Test Subject ${timestamp}`);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{subjectName}}\",\n    \"disable\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/subjects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"subjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+									"pm.test(\"Response is an object\", () => {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.be.an('object');",
+									"});",
+									"pm.test(\"Subject was updated\", () => {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.have.property('id');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"name\": \"Mathematics Updated\",\n    \"disable\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/subjects",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"subjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+									"pm.test(\"Subject deleted successfully\", () => {",
+									"    pm.expect(pm.response.status).to.equal(\"OK\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/subjects/{{subjectId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"subjects",
+								"{{subjectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Non-existing (404)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => pm.response.to.have.status(404));",
+									"pm.test(\"Error message present\", () => {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.be.an('object');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/subjects/999999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"subjects",
+								"999999"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lesson",
+			"item": [
+				{
+					"name": "GET All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+									"pm.test(\"Response is an array\", () => {",
+									"    pm.expect(pm.response.json()).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/lessons",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"lessons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+									"pm.test(\"Response is an object\", () => {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.be.an('object');",
+									"});",
+									"pm.test(\"Has required fields\", () => {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.have.property('id');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/lessons/7",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"lessons",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+									"pm.test(\"Response is an array\", () => {",
+									"    pm.expect(pm.response.json()).to.be.an('array');",
+									"});",
+									"pm.collectionVariables.set(\"lessonId\", 4);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const random = Math.floor(Math.random() * 1000);",
+									"pm.collectionVariables.set(\"lessonHours\", random % 3 + 1);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hours\": {{lessonHours}},\n    \"lessonType\": \"LECTURE\",\n    \"subject\": { \"id\": 1 },\n    \"teacher\": { \"id\": 1 },\n    \"semesterId\": 1,\n    \"groups\": [{ \"id\": 1 }]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/lessons",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"lessons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+									"pm.test(\"Lesson deleted successfully\", () => {",
+									"    pm.expect(pm.response.text()).to.not.be.empty;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/lessons/7",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"lessons",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();",
+							"if (response.token) {",
+							"    pm.environment.set(\"jwt_token\", response.token);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"manager@gmail.com\",\n  \"password\": \"Qwerty!123\"\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth/sign-in",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "Bearer_{{jwt_token}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "subjectId",
+			"value": ""
+		},
+		{
+			"key": "lessonId",
+			"value": ""
+		}
+	]
+}
